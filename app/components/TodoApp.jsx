@@ -4,6 +4,7 @@ var AddTodo = require("AddTodo");
 var TodoSearch = require("TodoSearch");
 var uuid = require('node-uuid');
 var api = require("../api/TodoApi.jsx");
+var moment = require('moment');
 
 var TodoApp = React.createClass({
     componentDidUpdate:function () {
@@ -22,7 +23,9 @@ var TodoApp = React.createClass({
                 ...this.state.todos,{
                 text:text,
                 id:uuid(),
-                completed:false
+                completed:false,
+                createdAt:moment().unix(),
+                completedAt:undefined
                 }
             ]
         })
@@ -36,7 +39,8 @@ var TodoApp = React.createClass({
     handleToggle:function (id) {
         var update = this.state.todos.map((todo)=>{
            if(todo.id===id){
-               todo.completed = !todo.completed
+               todo.completed = !todo.completed;
+               todo.completedAt = todo.completed ? moment().unix() : undefined;
            }
            return todo
         });
@@ -44,6 +48,15 @@ var TodoApp = React.createClass({
         this.setState({
             todos:update
         })
+    },
+    stubid:function (e) {
+        e.preventDefault();
+        var name = this.refs.name.value;
+        if (name =='عبادة'){
+            alert('اجدب')
+        }else if(name == 'عمر'){
+            alert('معلم')
+        }
     },
   render: function () {
         var {todos, showCompleted, searchText} = this.state;
@@ -53,7 +66,9 @@ var TodoApp = React.createClass({
           <TodoSearch onSearch={this.handleSearch} />
           <TodoList onToggle={this.handleToggle} todos={filterTodos} />
           <AddTodo onAddTodo={this.handleAdd} />
-
+          <form onSubmit={this.stubid}>
+              <input ref="name" type="text" placeholder="حط اسمك" />
+          </form>
       </div>
     )
   }

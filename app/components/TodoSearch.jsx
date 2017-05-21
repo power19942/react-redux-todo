@@ -12,7 +12,7 @@ var TodoSearch = React.createClass({
                     <input type="text" ref='searchText' onChange={this.handleChange} placeholder="sfb" />
                 </div>
                 <div>
-                    <input type="checkbox" ref="showCompleted" onChange={this.handleChange} />
+                    <input type="checkbox" ref="showCompleted" onChange={this.handleChange} /> show completed
                 </div>
             </div>
         )
