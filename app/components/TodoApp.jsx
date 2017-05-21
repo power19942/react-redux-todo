@@ -3,34 +3,17 @@ var TodoList = require("TodoList");
 var AddTodo = require("AddTodo");
 var TodoSearch = require("TodoSearch");
 var uuid = require('node-uuid');
+var api = require("../api/TodoApi.jsx");
 
 var TodoApp = React.createClass({
+    componentDidUpdate:function () {
+        api.setTodos(this.state.todos);
+    },
     getInitialState:function () {
       return{
           showCompleted:false,
           searchText:'',
-          todos:[
-              {
-                  id:uuid(),
-                  text:'shit',
-              },
-              {
-                  id:uuid(),
-                  text:'shit',
-              },
-              {
-                  id:uuid(),
-                  text:'shit',
-              },
-              {
-                  id:uuid(),
-                  text:'shit',
-              },
-              {
-                  id:uuid(),
-                  text:'shit',
-              }
-          ]
+          todos:api.getTodos()
       }
     },
     handleAdd:function (text) {
@@ -38,7 +21,8 @@ var TodoApp = React.createClass({
             todos:[
                 ...this.state.todos,{
                 text:text,
-                id:uuid()
+                id:uuid(),
+                completed:false
                 }
             ]
         })
@@ -49,12 +33,25 @@ var TodoApp = React.createClass({
             searchText:searchText
         })
     },
+    handleToggle:function (id) {
+        var update = this.state.todos.map((todo)=>{
+           if(todo.id===id){
+               todo.completed = !todo.completed
+           }
+           return todo
+        });
+
+        this.setState({
+            todos:update
+        })
+    },
   render: function () {
-        var {todos} = this.state;
+        var {todos, showCompleted, searchText} = this.state;
+        var filterTodos = api.filterTodos(todos,showCompleted,searchText);
     return (
       <div>
           <TodoSearch onSearch={this.handleSearch} />
-          <TodoList todos={todos} />
+          <TodoList onToggle={this.handleToggle} todos={filterTodos} />
           <AddTodo onAddTodo={this.handleAdd} />
 
       </div>
