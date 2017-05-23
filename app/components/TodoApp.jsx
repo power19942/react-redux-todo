@@ -49,26 +49,22 @@ var TodoApp = React.createClass({
             todos:update
         })
     },
-    stubid:function (e) {
-        e.preventDefault();
-        var name = this.refs.name.value;
-        if (name =='عبادة'){
-            alert('اجدب')
-        }else if(name == 'عمر'){
-            alert('معلم')
-        }
-    },
   render: function () {
         var {todos, showCompleted, searchText} = this.state;
         var filterTodos = api.filterTodos(todos,showCompleted,searchText);
     return (
       <div>
-          <TodoSearch onSearch={this.handleSearch} />
-          <TodoList onToggle={this.handleToggle} todos={filterTodos} />
-          <AddTodo onAddTodo={this.handleAdd} />
-          <form onSubmit={this.stubid}>
-              <input ref="name" type="text" placeholder="حط اسمك" />
-          </form>
+          <h1 className="page-title" style={{textAlign:'center'}}>Todo App</h1>
+          <div className="row">
+              <div className="column small-centered small-11 medium-6 large-5">
+                  <div className="container">
+                      <TodoSearch onSearch={this.handleSearch} />
+                      <TodoList onToggle={this.handleToggle} todos={filterTodos} />
+                      <AddTodo onAddTodo={this.handleAdd} />
+                  </div>
+              </div>
+          </div>
+
       </div>
     )
   }
